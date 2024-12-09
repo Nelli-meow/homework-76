@@ -1,31 +1,30 @@
 import * as React from 'react';
 import { Box, Button, Container, TextField } from '@mui/material';
-import { useState } from 'react';
-import axiosApi from '../../axiosApi.ts';
+import { useCallback, useState } from 'react';
 
+
+const initialState = {
+  author: '',
+  message: '',
+};
 
 const Form = () => {
-  const [form, setForm] = useState({
-    author: '',
-    message: '',
-  })
+  const [form, setForm] = useState(initialState)
 
   const submitPost = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setForm({...initialState});
   };
 
-  const inputChangeHandler =  async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const inputChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-      const { name, value } = e.target;
-      setForm(prevState => ({
-        ...prevState,
-        [name]: value,
-      }));
-
-    console.log(form)
-
-  };
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }, []);
 
 
   return (
