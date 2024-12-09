@@ -39,7 +39,7 @@ messagesRouter.get("/",  async (req, res) => {
 messagesRouter.post("/", async (req, res) => {
     const { message, author } = req.body as bodyContext;
 
-    if (!message.trim() || !author.trim()) {
+    if (!message || !author) {
         res.status(400).send('Author and message must be present and non-empty');
         return;
     }

@@ -1,10 +1,10 @@
-import Form from '../components/Form/Form.tsx';
 import Messages from '../features/messages/Messages.tsx';
+import NewMessage from '../features/messages/containers/NewMessage.tsx';
 
 const MainPage = () => {
   return (
     <div>
-      <Form/>
+      <NewMessage/>
       <Messages/>
     </div>
   );

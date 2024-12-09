@@ -1,26 +1,36 @@
 import * as React from 'react';
 import { Box, Button, Container, TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
+import { ChatMessageMutation } from '../../types';
 
+interface Props {
+  onSubmit: (message: ChatMessageMutation) => void;
+}
 
 const initialState = {
   author: '',
   message: '',
 };
 
-const Form = () => {
-  const [form, setForm] = useState(initialState)
+const Form: React.FC<Props> = ({onSubmit}) => {
+  const [oneMessage, setOneMessage] = useState(initialState);
 
-  const submitPost = async (e: React.FormEvent) => {
+  const submitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setForm({...initialState});
+    if (!oneMessage.author || !oneMessage.message) {
+      console.log('Both fields are required.');
+      return;
+    }
+
+    onSubmit(oneMessage);
+    setOneMessage(initialState);
   };
 
   const inputChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setForm((prevState) => ({
+    setOneMessage((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -30,11 +40,12 @@ const Form = () => {
   return (
     <Container fixed>
       <h1>Чатик</h1>
-      <form onSubmit={submitPost}>
+      <form onSubmit={submitMessage}>
         <Box mb={5} mt={5}>
           <TextField
             label="Author"
             name="author"
+            value={oneMessage.author}
             onChange={inputChangeHandler}
             variant="outlined"
             fullWidth
@@ -48,6 +59,7 @@ const Form = () => {
           <TextField
             label="Message"
             name="message"
+            value={oneMessage.message}
             onChange={inputChangeHandler}
             variant="outlined"
             fullWidth
